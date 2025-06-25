@@ -1,6 +1,5 @@
 @LtuUniversity_HostAddress = http://localhost:5168
 
-GET {{LtuUniversity_HostAddress}}/weatherforecast/
-Accept: application/json
+
 
 ###
