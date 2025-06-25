@@ -15,5 +15,19 @@ namespace LtuUniversity.Data
         }
 
         public DbSet<Student> Students { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Student>().HasData(
+                new Student { Id=1, LastName = "Kalle", FirstName = "Anka"},
+                new Student { Id=2, LastName = "Nissa", FirstName = "Anka"},
+                new Student { Id=3, LastName = "Olof", FirstName = "Anka"},
+                new Student { Id=4, LastName = "Anna", FirstName = "Anka"}
+                );
+
+            //modelBuilder.Entity<Student>().ToTable("Banan");
+        }
     }
 }

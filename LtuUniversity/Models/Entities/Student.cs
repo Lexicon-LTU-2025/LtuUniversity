@@ -1,4 +1,6 @@
-﻿namespace LtuUniversity.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LtuUniversity.Models.Entities;
 
 public class Student
 {
