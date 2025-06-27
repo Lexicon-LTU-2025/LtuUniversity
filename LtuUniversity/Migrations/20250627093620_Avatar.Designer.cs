@@ -3,6 +3,7 @@ using LtuUniversity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LtuUniversity.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    partial class UniversityContextModelSnapshot : ModelSnapshot
+    [Migration("20250627093620_Avatar")]
+    partial class Avatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,28 +52,28 @@ namespace LtuUniversity.Migrations
                         new
                         {
                             Id = 1,
-                            Avatar = "123",
+                            Avatar = "",
                             FirstName = "Anka",
                             LastName = "Kalle"
                         },
                         new
                         {
                             Id = 2,
-                            Avatar = "123",
+                            Avatar = "",
                             FirstName = "Anka",
                             LastName = "Nissa"
                         },
                         new
                         {
                             Id = 3,
-                            Avatar = "123",
+                            Avatar = "",
                             FirstName = "Anka",
                             LastName = "Olof"
                         },
                         new
                         {
                             Id = 4,
-                            Avatar = "123",
+                            Avatar = "",
                             FirstName = "Anka",
                             LastName = "Anna"
                         });

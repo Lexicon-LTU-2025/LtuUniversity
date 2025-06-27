@@ -21,10 +21,10 @@ namespace LtuUniversity.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Student>().HasData(
-                new Student { Id=1, LastName = "Kalle", FirstName = "Anka"},
-                new Student { Id=2, LastName = "Nissa", FirstName = "Anka"},
-                new Student { Id=3, LastName = "Olof", FirstName = "Anka"},
-                new Student { Id=4, LastName = "Anna", FirstName = "Anka"}
+                new Student { Id=1, LastName = "Kalle", FirstName = "Anka", Avatar = "123" },
+                new Student { Id=2, LastName = "Nissa", FirstName = "Anka", Avatar = "123" },
+                new Student { Id=3, LastName = "Olof", FirstName = "Anka" , Avatar = "123"  },
+                new Student { Id=4, LastName = "Anna", FirstName = "Anka" , Avatar = "123"  }
                 );
 
             //modelBuilder.Entity<Student>().ToTable("Banan");
