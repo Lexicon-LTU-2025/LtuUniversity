@@ -28,6 +28,13 @@ namespace LtuUniversity.Data
                 new Student { Id=4, LastName = "Anna", FirstName = "Anka" , Avatar = "123"  }
                 );
 
+            modelBuilder.Entity<Address>().HasData(
+                new Address { Id = 1,  City="Stockholm", Street = "Gatan1" , ZipCode = "123", StudentId = 1},
+                new Address { Id = 2,  City="Stockholm2", Street = "Gatan2" , ZipCode = "123", StudentId = 2},
+                new Address { Id = 3,  City="Stockholm3", Street = "Gatan3" , ZipCode = "123", StudentId = 3},
+                new Address { Id = 4,  City="Stockholm4", Street = "Gatan4" , ZipCode = "123", StudentId = 4}
+                );
+
         }
     }
 }

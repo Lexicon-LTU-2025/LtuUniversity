@@ -26,7 +26,10 @@ namespace LtuUniversity.Controllers
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
            // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
-            return await _context.Students.ToListAsync();
+           var res = await _context.Students.ToListAsync();
+           var res2 = await _context.Students.Include(s => s.Address).ToListAsync();
+
+            return Ok(res2);
         }
 
         // GET: api/Students/5
