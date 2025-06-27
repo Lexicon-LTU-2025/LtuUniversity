@@ -9,4 +9,7 @@ public class Student
     public string LastName { get; set; } = string.Empty;
     public string FullName => $"{FirstName} {LastName}";
     public string Avatar { get; set; } = string.Empty;
+
+    //Navigation property
+    public Address Address { get; set; }
 }

@@ -25,6 +25,7 @@ namespace LtuUniversity.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
+           // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
             return await _context.Students.ToListAsync();
         }
 

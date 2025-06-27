@@ -15,6 +15,7 @@ namespace LtuUniversity.Data
         }
 
         public DbSet<Student> Students { get; set; } = default!;
+        //public DbSet<Address> Address { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,7 +28,6 @@ namespace LtuUniversity.Data
                 new Student { Id=4, LastName = "Anna", FirstName = "Anka" , Avatar = "123"  }
                 );
 
-            //modelBuilder.Entity<Student>().ToTable("Banan");
         }
     }
 }
