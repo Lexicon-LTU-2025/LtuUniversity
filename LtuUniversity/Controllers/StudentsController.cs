@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LtuUniversity.Data;
 using LtuUniversity.Models.Entities;
+using LtuUniversity.Models.Dtos;
 
 namespace LtuUniversity.Controllers
 {
@@ -26,8 +27,11 @@ namespace LtuUniversity.Controllers
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
            // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
-           var res = await _context.Students.ToListAsync();
-           var res2 = await _context.Students.Include(s => s.Address).ToListAsync();
+           //var res = await _context.Students.Include(s => s.Address).ToListAsync();
+           var res2 = await _context.Students
+                                  //  .Include(s => s.Address)
+                                    .Select(s => new StudentDto(s.Id, s.FullName, s.Avatar, s.Address.City))
+                                    .ToListAsync();
 
             return Ok(res2);
         }
