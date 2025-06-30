@@ -15,6 +15,7 @@ namespace LtuUniversity.Data
         }
 
         public DbSet<Student> Students { get; set; } = default!;
+       // public DbSet<Assignment> Assignments { get; set; } = default!;
         //public DbSet<Address> Address { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,7 +44,6 @@ namespace LtuUniversity.Data
             modelBuilder.Entity<Address>()
                         .HasIndex(a => a.StudentId)
                         .IsUnique(); //This ensures one-to-one
-
         }
     }
 }

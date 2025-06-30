@@ -12,4 +12,9 @@ public class Student
 
     //Navigation property
     public Address Address { get; set; }
+
+    //Conv 2
+    //Conv 3
+    //Conv 4
+    public ICollection<Assignment> Assignments { get; set; }
 }

@@ -24,7 +24,7 @@ namespace LtuUniversity.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudent()
         {
            // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
            //var res = await _context.Students.Include(s => s.Address).ToListAsync();

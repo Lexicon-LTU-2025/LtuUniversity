@@ -1,7 +1,9 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace LtuUniversity.Models.Entities;
 
+[Index(nameof(StudentId), IsUnique = true)]
 public class Address
 {
     public int Id { get; set; }
