@@ -35,6 +35,15 @@ namespace LtuUniversity.Data
                 new Address { Id = 4,  City="Stockholm4", Street = "Gatan4" , ZipCode = "123", StudentId = 4}
                 );
 
+            modelBuilder.Entity<Student>()
+                        .HasOne(s => s.Address)
+                        .WithOne(a => a.Student)
+                        .HasForeignKey<Address>(a => a.StudentId);
+
+            modelBuilder.Entity<Address>()
+                        .HasIndex(a => a.StudentId)
+                        .IsUnique(); //This ensures one-to-one
+
         }
     }
 }
