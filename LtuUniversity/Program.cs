@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using LtuUniversity.Data;
+using LtuUniversity.Extensions;
 
 namespace LtuUniversity
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             
@@ -30,6 +31,7 @@ namespace LtuUniversity
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                await app.SeedDataAsync();
             }
 
             app.UseHttpsRedirection();
