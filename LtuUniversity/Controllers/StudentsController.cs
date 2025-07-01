@@ -46,16 +46,26 @@ namespace LtuUniversity.Controllers
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<StudentDetailsDto>> GetStudent(int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students
+                .Where(s => s.Id == id)
+                .Select(s => new StudentDetailsDto
+                {
+                    Id = s.Id,
+                    Avatar = s.Avatar,
+                    FullName = s.FullName,
+                    AddressCity = s.Address.City,
+                    Courses = s.Enrollments.Select(e => new CourseDto(e.Course.Title, e.Grade))
+                })
+                .FirstOrDefaultAsync();
 
             if (student == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return Ok(student);
         }
 
         // PUT: api/Students/5

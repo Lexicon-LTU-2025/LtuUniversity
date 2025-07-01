@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LtuUniversity.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20250630122523_Test")]
-    partial class Test
+    [Migration("20250701120112_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,19 +24,19 @@ namespace LtuUniversity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CourseStudent", b =>
+            modelBuilder.Entity("BookCourse", b =>
                 {
+                    b.Property<int>("BooksId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CoursesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
+                    b.HasKey("BooksId", "CoursesId");
 
-                    b.HasKey("CoursesId", "StudentsId");
+                    b.HasIndex("CoursesId");
 
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("CourseStudent");
+                    b.ToTable("BookCourse");
                 });
 
             modelBuilder.Entity("LtuUniversity.Models.Entities.Address", b =>
@@ -92,6 +92,45 @@ namespace LtuUniversity.Migrations
                     b.ToTable("Assignment");
                 });
 
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Author", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Author");
+                });
+
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Book", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Book");
+                });
+
             modelBuilder.Entity("LtuUniversity.Models.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -107,6 +146,24 @@ namespace LtuUniversity.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Enrollment", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Enrollment");
                 });
 
             modelBuilder.Entity("LtuUniversity.Models.Entities.Student", b =>
@@ -134,17 +191,17 @@ namespace LtuUniversity.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("CourseStudent", b =>
+            modelBuilder.Entity("BookCourse", b =>
                 {
-                    b.HasOne("LtuUniversity.Models.Entities.Course", null)
+                    b.HasOne("LtuUniversity.Models.Entities.Book", null)
                         .WithMany()
-                        .HasForeignKey("CoursesId")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LtuUniversity.Models.Entities.Student", null)
+                    b.HasOne("LtuUniversity.Models.Entities.Course", null)
                         .WithMany()
-                        .HasForeignKey("StudentsId")
+                        .HasForeignKey("CoursesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -171,12 +228,54 @@ namespace LtuUniversity.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Book", b =>
+                {
+                    b.HasOne("LtuUniversity.Models.Entities.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Enrollment", b =>
+                {
+                    b.HasOne("LtuUniversity.Models.Entities.Course", "Course")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LtuUniversity.Models.Entities.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Author", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("LtuUniversity.Models.Entities.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
             modelBuilder.Entity("LtuUniversity.Models.Entities.Student", b =>
                 {
                     b.Navigation("Address")
                         .IsRequired();
 
                     b.Navigation("Assignments");
+
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }
