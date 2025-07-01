@@ -27,8 +27,14 @@ namespace LtuUniversity.Controllers
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudent()
         {
            // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
-           var res = await _context.Students.Include(s => s.Address).ToListAsync();
+           //var res = await _context.Students.Include(s => s.Address).ToListAsync();
+
+            //var res3 = await _context.Students.Include(s => s.Courses);
+            var res3 = await _context.Students.Include(s => s.Enrollments).ToListAsync();
+            
+            var res4 = await _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).ToListAsync();
            
+            var res5 = await _context.Students.Where(s => s.Address.City == "Bofred").ToListAsync();    
             
            var res2 = await _context.Students
                                   //  .Include(s => s.Address)
