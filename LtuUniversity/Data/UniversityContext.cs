@@ -36,6 +36,8 @@ namespace LtuUniversity.Data
             //    new Address { Id = 4,  City="Stockholm4", Street = "Gatan4" , ZipCode = "123", StudentId = 4}
             //    );
 
+            modelBuilder.Entity<Enrollment>().HasKey(x => new {x.StudentId, x.CourseId});
+
             modelBuilder.Entity<Student>()
                         .HasOne(s => s.Address)
                         .WithOne(a => a.Student)

@@ -18,5 +18,6 @@ public class Student
     //Conv 4
     public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
-    public ICollection<Course> Courses { get; set; } = new List<Course>();
+    //public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 }
