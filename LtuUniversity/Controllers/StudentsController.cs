@@ -71,14 +71,22 @@ namespace LtuUniversity.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, Student student)
+        public async Task<IActionResult> PutStudent(int id, UpdateStudentDto dto)
         {
-            if (id != student.Id)
-            {
-                return BadRequest();
-            }
+            var student = await _context.Students
+                                       .Include(s => s.Address)
+                                       .FirstOrDefaultAsync(s => s.Id == id);
 
-            _context.Entry(student).State = EntityState.Modified;
+            if (student is null) return NotFound();
+
+            student.FirstName = dto.FirstName;
+            student.LastName = dto.LastName;
+            student.Avatar = dto.Avatar;
+            student.Address.Street = dto.Street;
+            student.Address.City = dto.City;
+            student.Address.ZipCode = dto.ZipCode;
+
+           // _context.Entry(student).State = EntityState.Modified;
 
             try
             {
@@ -102,12 +110,27 @@ namespace LtuUniversity.Controllers
         // POST: api/Students
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Student>> PostStudent(Student student)
+        public async Task<ActionResult<Student>> PostStudent(CreateStudentDto dto)
         {
+            var student = new Student
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Avatar = dto.Avatar,
+                Address = new Address
+                {
+                    City = dto.City,
+                    Street = dto.Street,
+                    ZipCode = dto.ZipCode
+                }
+            };
+
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudent", new { id = student.Id }, student);
+            var studentDto = new StudentDto(student.Id, student.FullName, student.Avatar, student.Address.City);
+
+            return CreatedAtAction(nameof(GetStudent), new { id = studentDto.Id }, studentDto);
         }
 
         // DELETE: api/Students/5

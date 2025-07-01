@@ -15,3 +15,6 @@ public class StudentDetailsDto
     public required string AddressCity { get; set; }
     public IEnumerable<CourseDto> Courses { get; set; } = Enumerable.Empty<CourseDto>();
 }
+
+public record CreateStudentDto(string FirstName, string LastName, string Avatar, string Street, string ZipCode, string City);
+public record UpdateStudentDto(string FirstName, string LastName, string Avatar, string Street, string ZipCode, string City);
