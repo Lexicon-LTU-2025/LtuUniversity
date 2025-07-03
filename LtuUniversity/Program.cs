@@ -19,6 +19,9 @@ namespace LtuUniversity
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+            builder.Services.AddSwaggerGen();
+            
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
@@ -31,6 +34,10 @@ namespace LtuUniversity
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwaggerUI(opt =>
+                {
+                    opt.SwaggerEndpoint("/openapi/v1.json", "v1");
+                });
                 await app.SeedDataAsync();
             }
 
