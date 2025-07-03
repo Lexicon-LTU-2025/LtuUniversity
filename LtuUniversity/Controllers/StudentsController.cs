@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LtuUniversity.Data;
+using LtuUniversity.Models.Dtos;
+using LtuUniversity.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LtuUniversity.Data;
-using LtuUniversity.Models.Entities;
-using LtuUniversity.Models.Dtos;
+using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LtuUniversity.Controllers
 {
     [Route("api/students")]
     [ApiController]
+    [Produces("application/json")]
     public class StudentsController : ControllerBase
     {
         private readonly UniversityContext _context;
@@ -22,8 +25,14 @@ namespace LtuUniversity.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Gets all students
+        /// </summary>
+        /// <returns>List of StudentDtos</returns>
         // GET: api/Students
         [HttpGet]
+        [SwaggerOperation(Summary = "Get all students", Description = "Gets all students with their address city.")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentDto>))]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudent()
         {
            // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
@@ -44,25 +53,20 @@ namespace LtuUniversity.Controllers
             return Ok(res2);
         }
 
-        // GET: api/Students/5
+        /// <summary>
+        /// Gets a specific student by ID with details.
+        /// </summary>
+        /// <param name="id">The student ID.</param>
+        /// <returns>Student details DTO.</returns>
+        
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDetailsDto>> GetStudent(int id)
+        [SwaggerOperation(Summary = "Get student by ID", Description = "Returns full details of a student.")]
+        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(StudentDetailsDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        [SwaggerResponse(StatusCodes.Status200OK, "Find Student", typeof(StudentDetailsDto))]
+        public async Task<ActionResult<StudentDetailsDto>> GetStudent([FromRoute, Range(0 , int.MaxValue)]int id)
         {
-
-            var dto = new List<SelectManyDto>
-            {
-                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}},
-                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}},
-                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}}
-            };
-
-
-            var res = dto.Select(t => t.CourseDtos).ToList();
-            var res2 = dto.SelectMany(t => t.CourseDtos).ToList();
-
-
-
-
             var student = await _context.Students
                 //.AsNoTracking()
                 .Where(s => s.Id == id)
@@ -84,10 +88,18 @@ namespace LtuUniversity.Controllers
             return Ok(student);
         }
 
-        // PUT: api/Students/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+       
+        /// <summary>
+        /// Updates an existing student by ID.
+        /// </summary>
+        /// <param name="id">The student ID.</param>
+        /// <param name="dto">The updated student data.</param>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, UpdateStudentDto dto)
+        [SwaggerOperation(Summary = "Update student", Description = "Updates an existing student by ID.")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> PutStudent([FromRoute]int id, [FromBody] UpdateStudentDto dto)
         {
             var student = await _context.Students
                                        .Include(s => s.Address)
