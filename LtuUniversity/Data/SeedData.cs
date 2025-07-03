@@ -99,7 +99,7 @@ public class SeedData
         Enumerable.Range(1, numberOfCourses)
                   .Select(_ => new Course()
                   {
-                      Title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(faker.Company.Bs());
+                      Title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(faker.Company.Bs())
                   })
                   .ToList();
     //{
