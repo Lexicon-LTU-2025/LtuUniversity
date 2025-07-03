@@ -9,5 +9,7 @@ public class MapperProfile : Profile
     public MapperProfile()
     {
         CreateMap<Student, StudentDto>();
+
+        CreateMap<Student, CreateStudentDto>().ReverseMap();
     }
 }

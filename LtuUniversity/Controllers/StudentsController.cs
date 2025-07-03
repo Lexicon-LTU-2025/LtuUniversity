@@ -134,25 +134,14 @@ namespace LtuUniversity.Controllers
         [SwaggerOperation(Summary = "Create student", Description = "Creates a new student.", Tags = ["Student"])]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Student>> PostStudent(CreateStudentDto dto)
+        public async Task<ActionResult<StudentDto>> PostStudent(CreateStudentDto dto)
         {
-            var student = new Student
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Avatar = dto.Avatar,
-                Address = new Address
-                {
-                    City = dto.City,
-                    Street = dto.Street,
-                    ZipCode = dto.ZipCode
-                }
-            };
+            var student = mapper.Map<Student>(dto);
 
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
-            var studentDto = new StudentDto(student.Id, student.FullName, student.Avatar, student.Address.City);
+            var studentDto = mapper.Map<StudentDto>(student);
 
             return CreatedAtAction(nameof(GetStudent), new { id = studentDto.Id }, studentDto);
         }
