@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using LtuUniversity.Data;
 using LtuUniversity.Models.Dtos;
 using LtuUniversity.Models.Entities;
@@ -57,23 +58,16 @@ namespace LtuUniversity.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "Find Student", typeof(StudentDetailsDto))]
         public async Task<ActionResult<StudentDetailsDto>> GetStudent([FromRoute, Range(0 , int.MaxValue)]int id)
         {
-            var student = await _context.Students
-                //.AsNoTracking()
-                .Where(s => s.Id == id)
-                .Select(s => new StudentDetailsDto
-                {
-                    //Id = s.Id,
-                    Avatar = s.Avatar,
-                    FullName = s.FullName,
-                    AddressCity = s.Address.City,
-                    Courses = s.Enrollments.Select(e => new CourseDto(e.Course.Title, e.Grade))
-                })
-                .FirstOrDefaultAsync();
+            //var student = await _context.Students
+            //    .Where(s => s.Id == id)
+            //    .ProjectTo<StudentDetailsDto>(mapper.ConfigurationProvider)
+            //    .FirstOrDefaultAsync();
+
+            var student = await mapper.ProjectTo<StudentDetailsDto>(_context.Students.Where(s => s.Id == id))
+                                      .FirstOrDefaultAsync();
 
             if (student == null)
-            {
                 return NotFound();
-            }
 
             return Ok(student);
         }
