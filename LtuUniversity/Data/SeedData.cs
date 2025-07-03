@@ -27,28 +27,39 @@ public class SeedData
 
     private static IEnumerable<Enrollment> GenerateEnrollments(IEnumerable<Student> students, IEnumerable<Course> courses)
     {
-        var rnd = new Random();
-        var enrollments = new List<Enrollment>();
+        return students.SelectMany(student => courses
+                                .Where(_ => faker.Random.Int(0, 5) == 0)
+                                .Select(course => new Enrollment
+                                {
+                                    Student = student,
+                                    Course = course,
+                                    Grade = faker.Random.Int(1, 5)
 
-        foreach (var student in students)
-        {
-            foreach (var course in courses)
-            {
-                if(rnd.Next(0, 5) == 0)
-                {
-                    var enrollment = new Enrollment
-                    {
-                        Student = student,
-                        Grade = rnd.Next(1, 6),
-                        Course = course
-                    };
+                                }))
+                                .ToList();
 
-                    enrollments.Add(enrollment);
-                }
-            }
-        }
+        //var rnd = new Random();
+        //var enrollments = new List<Enrollment>();
 
-        return enrollments;
+        //foreach (var student in students)
+        //{
+        //    foreach (var course in courses)
+        //    {
+        //        if(rnd.Next(0, 5) == 0)
+        //        {
+        //            var enrollment = new Enrollment
+        //            {
+        //                Student = student,
+        //                Grade = rnd.Next(1, 6),
+        //                Course = course
+        //            };
+
+        //            enrollments.Add(enrollment);
+        //        }
+        //    }
+        //}
+
+        //return enrollments;
     }
 
     private static IEnumerable<Student> GenerateStudents(int numberOfStudents)
@@ -84,17 +95,23 @@ public class SeedData
         return students;
     }
 
-    private static IEnumerable<Course> GenerateCourses(int numberOfCourses)
-    {
-        var courses = new List<Course>();
+    private static IEnumerable<Course> GenerateCourses(int numberOfCourses) =>
+        Enumerable.Range(1, numberOfCourses)
+                  .Select(_ => new Course()
+                  {
+                      Title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(faker.Company.Bs());
+                  })
+                  .ToList();
+    //{
+    //    var courses = new List<Course>();
 
-        for (int i = 0; i < numberOfCourses; i++)
-        {
-            var title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(faker.Company.Bs());
-            var course = new Course { Title = title };
-            courses.Add(course);
-        }
+    //    for (int i = 0; i < numberOfCourses; i++)
+    //    {
+    //        var title = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(faker.Company.Bs());
+    //        var course = new Course { Title = title };
+    //        courses.Add(course);
+    //    }
 
-        return courses;
-    }
+    //    return courses;
+    //}
 }

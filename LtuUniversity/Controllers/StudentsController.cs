@@ -48,11 +48,27 @@ namespace LtuUniversity.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDetailsDto>> GetStudent(int id)
         {
+
+            var dto = new List<SelectManyDto>
+            {
+                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}},
+                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}},
+                new() { Value =1 , CourseDtos = new List<CourseDto>() { new("C#", 4), new("Java", 5)}}
+            };
+
+
+            var res = dto.Select(t => t.CourseDtos).ToList();
+            var res2 = dto.SelectMany(t => t.CourseDtos).ToList();
+
+
+
+
             var student = await _context.Students
+                //.AsNoTracking()
                 .Where(s => s.Id == id)
                 .Select(s => new StudentDetailsDto
                 {
-                    Id = s.Id,
+                    //Id = s.Id,
                     Avatar = s.Avatar,
                     FullName = s.FullName,
                     AddressCity = s.Address.City,
