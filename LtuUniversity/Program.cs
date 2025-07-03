@@ -24,6 +24,11 @@ namespace LtuUniversity
             {
                 opt.EnableAnnotations();
             });
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<MapperProfile>();
+            });
             
             //builder.Services.AddOpenApi();
 

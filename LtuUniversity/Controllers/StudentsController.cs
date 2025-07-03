@@ -1,4 +1,5 @@
-﻿using LtuUniversity.Data;
+﻿using AutoMapper;
+using LtuUniversity.Data;
 using LtuUniversity.Models.Dtos;
 using LtuUniversity.Models.Entities;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,12 @@ namespace LtuUniversity.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly UniversityContext _context;
+        private readonly IMapper mapper;
 
-        public StudentsController(UniversityContext context)
+        public StudentsController(UniversityContext context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -35,22 +38,9 @@ namespace LtuUniversity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentDto>))]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudent()
         {
-           // var addresInStockholm = _context.Address.Where(a => a.City == "Stockholm");
-           //var res = await _context.Students.Include(s => s.Address).ToListAsync();
+            var dto = await mapper.ProjectTo<StudentDto>(_context.Students).ToListAsync();
 
-            //var res3 = await _context.Students.Include(s => s.Courses);
-            var res3 = await _context.Students.Include(s => s.Enrollments).ToListAsync();
-            
-            var res4 = await _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).ToListAsync();
-           
-            var res5 = await _context.Students.Where(s => s.Address.City == "Bofred").ToListAsync();    
-            
-           var res2 = await _context.Students
-                                  //  .Include(s => s.Address)
-                                    .Select(s => new StudentDto(s.Id, s.FullName, s.Avatar, s.Address.City))
-                                    .ToListAsync();
-
-            return Ok(res2);
+            return Ok(dto);
         }
 
         /// <summary>

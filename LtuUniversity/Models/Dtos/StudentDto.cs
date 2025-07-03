@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LtuUniversity.Models.Dtos;
 
-public record StudentDto(int Id, string FullName, string Avatar, string City);
+public record StudentDto(int Id, string FullName, string Avatar, string AddressCity);
 
 public record CourseDto(string Title, int Grade);
 
