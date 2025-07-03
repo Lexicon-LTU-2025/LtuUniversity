@@ -135,9 +135,15 @@ namespace LtuUniversity.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Creates a new student.
+        /// </summary>
+        /// <param name="dto">The student creation DTO.</param>
+        /// <returns>The created student DTO.</returns>
         [HttpPost]
+        [SwaggerOperation(Summary = "Create student", Description = "Creates a new student.", Tags = ["Student"])]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(StudentDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Student>> PostStudent(CreateStudentDto dto)
         {
             var student = new Student
@@ -161,8 +167,14 @@ namespace LtuUniversity.Controllers
             return CreatedAtAction(nameof(GetStudent), new { id = studentDto.Id }, studentDto);
         }
 
-        // DELETE: api/Students/5
+        /// <summary>
+        /// Deletes a student by ID.
+        /// </summary>
+        /// <param name="id">The student ID.</param>
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Delete student", Description = "Deletes a student by ID.")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var student = await _context.Students.FindAsync(id);
