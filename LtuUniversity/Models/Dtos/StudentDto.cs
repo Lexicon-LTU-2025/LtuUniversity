@@ -1,4 +1,5 @@
 ﻿using LtuUniversity.Models.Entities;
+using LtuUniversity.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace LtuUniversity.Models.Dtos;
@@ -8,6 +9,7 @@ public record StudentDto(int Id, string FullName, string Avatar, string AddressC
 public record CourseDto
 {
     public string CourseTitle { get; init; } = string.Empty;
+    //[Range(0,5)]
     public int Grade { get; init; }
 }
 
@@ -20,5 +22,5 @@ public class StudentDetailsDto
     public IEnumerable<CourseDto> Enrollments { get; set; } = Enumerable.Empty<CourseDto>();
 }
 
-public record CreateStudentDto(string FirstName, string LastName, string Avatar, string AddressStreet, string AddressZipCode, string AddressCity);
+public record CreateStudentDto(string FirstName, string LastName, string Avatar,[MaxNumber(10)] string AddressStreet, string AddressZipCode, string AddressCity);
 public record UpdateStudentDto(string FirstName, string LastName, string Avatar, string AddressStreet, string AddressZipCode, string AddressCity);
