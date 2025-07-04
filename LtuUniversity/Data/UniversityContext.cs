@@ -36,7 +36,7 @@ namespace LtuUniversity.Data
             //    new Address { Id = 4,  City="Stockholm4", Street = "Gatan4" , ZipCode = "123", StudentId = 4}
             //    );
 
-            modelBuilder.Entity<Enrollment>().HasKey(x => new {x.StudentId, x.CourseId});
+            //modelBuilder.Entity<Enrollment>().HasKey(x => new {x.StudentId, x.CourseId});
 
             modelBuilder.Entity<Student>()
                         .HasOne(s => s.Address)
@@ -46,6 +46,14 @@ namespace LtuUniversity.Data
             modelBuilder.Entity<Address>()
                         .HasIndex(a => a.StudentId)
                         .IsUnique(); //This ensures one-to-one
+
+            modelBuilder.Entity<Student>()
+               .HasMany(s => s.Courses)
+               .WithMany(c => c.Students)
+               .UsingEntity<Enrollment>(
+               e => e.HasOne(e => e.Course).WithMany(c => c.Enrollments),
+               e => e.HasOne(e => e.Student).WithMany(s => s.Enrollments),
+               e => e.HasKey(e => new { e.StudentId, e.CourseId }));
         }
     }
 }
