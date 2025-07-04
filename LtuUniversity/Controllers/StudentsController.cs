@@ -39,7 +39,8 @@ namespace LtuUniversity.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<StudentDto>))]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudent()
         {
-            var test = await _context.Students.Include(s => s.Courses).ToListAsync();
+            var test = await _context.Students
+                .Where(s => EF.Property<DateTime>(s, "Edited") > DateTime.UtcNow.AddDays(-1)).ToListAsync();
 
             var dto = await mapper.ProjectTo<StudentDto>(_context.Students).ToListAsync();
 

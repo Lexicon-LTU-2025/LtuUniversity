@@ -25,5 +25,17 @@ namespace LtuUniversity.Data
             modelBuilder.ApplyConfiguration(new EnrollmentConfiguration());
             modelBuilder.ApplyConfiguration(new AddressConfiguration());
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ChangeTracker.DetectChanges();
+
+            foreach (var entry in ChangeTracker.Entries<Student>().Where(e => e.State == EntityState.Modified))
+            {
+                entry.Property("Edited").CurrentValue = DateTime.UtcNow;
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

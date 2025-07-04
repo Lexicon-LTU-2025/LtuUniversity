@@ -15,6 +15,8 @@ public class StudentConfigurations : IEntityTypeConfiguration<Student>
           .HasColumnName("Avatar") //For demo
           .HasMaxLength(255);
 
+        builder.Property<DateTime>("Edited");
+
         //..
         //..
 
