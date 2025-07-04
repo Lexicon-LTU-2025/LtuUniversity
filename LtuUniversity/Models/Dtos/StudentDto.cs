@@ -21,4 +21,4 @@ public class StudentDetailsDto
 }
 
 public record CreateStudentDto(string FirstName, string LastName, string Avatar, string AddressStreet, string AddressZipCode, string AddressCity);
-public record UpdateStudentDto(string FirstName, string LastName, string Avatar, string Street, string ZipCode, string City);
+public record UpdateStudentDto(string FirstName, string LastName, string Avatar, string AddressStreet, string AddressZipCode, string AddressCity);

@@ -91,12 +91,14 @@ namespace LtuUniversity.Controllers
 
             if (student is null) return NotFound();
 
-            student.FirstName = dto.FirstName;
-            student.LastName = dto.LastName;
-            student.Avatar = dto.Avatar;
-            student.Address.Street = dto.Street;
-            student.Address.City = dto.City;
-            student.Address.ZipCode = dto.ZipCode;
+            mapper.Map(dto, student);
+
+            //student.FirstName = dto.FirstName;
+            //student.LastName = dto.LastName;
+            //student.Avatar = dto.Avatar;
+            //student.Address.Street = dto.Street;
+            //student.Address.City = dto.City;
+            //student.Address.ZipCode = dto.ZipCode;
 
            // _context.Entry(student).State = EntityState.Modified;
 
