@@ -23,7 +23,7 @@ public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
                .WithMany(c => c.Enrollments)
                .HasForeignKey(e => e.CourseId);
 
-        builder.ToTable("Enrollments");
+        builder.ToTable("Enrollment");
 
     }
 }

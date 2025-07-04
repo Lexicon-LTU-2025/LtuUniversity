@@ -29,6 +29,6 @@ public class StudentConfigurations : IEntityTypeConfiguration<Student>
                e => e.HasOne(e => e.Course).WithMany(c => c.Enrollments),
                e => e.HasOne(e => e.Student).WithMany(s => s.Enrollments));
 
-        builder.ToTable("Students");
+        builder.ToTable("Student");
     }
 }
